@@ -1,11 +1,12 @@
 from api import PetFriends
-from settings import valid_email, not_valid_email, valid_password, test_password_1
+from settings import *
 import os
 
 pf = PetFriends()
 
+
 # Test 1
-def test_add_new_pet_without_photo(name='Громопётр', animal_type='Котан', age='29'):
+def test_add_new_pet_without_photo(name=name_ru, animal_type=animal_type_ru, age=age_num):
     """Проверяем что можно добавить питомца с корректными данными, но БЕЗ фото"""
 
     # Запрашиваем ключ api и сохраняем в переменую auth_key
@@ -17,6 +18,7 @@ def test_add_new_pet_without_photo(name='Громопётр', animal_type='Ко�
     # Сверяем полученный ответ с ожидаемым результатом
     assert status == 200
     assert result['name'] == name
+
 
 # Test 2
 def test_add_photo_for_pet(pet_photo='images/cat1.jpg'):
@@ -37,9 +39,10 @@ def test_add_photo_for_pet(pet_photo='images/cat1.jpg'):
     assert status == 200
     assert 'jpg' in pet_photo
 
+
 # Test 3
-def test_add_new_pet_with_un_normal_name(name='WWWW@@@@@#####!??ЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ___ЙЙЙЙЙ?????))))', animal_type='Котан',
-                                         age='29', pet_photo='images/cat.jpg'):
+def test_add_new_pet_with_un_normal_name(name=name_long, animal_type=animal_type_ru,
+                                         age=age_num, pet_photo='images/cat.jpg'):
     """Проверяем что можно добавить питомца с не корректным и чрезмерно длинным именем"""
 
     # Получаем полный путь изображения питомца и сохраняем в переменную pet_photo
@@ -55,9 +58,10 @@ def test_add_new_pet_with_un_normal_name(name='WWWW@@@@@#####!??ЯЯЯЯЯЯЯЯ
     assert status == 200
     assert result['name'] == name
 
+
 # Test 4
-def test_add_new_pet_with_un_normal_age(name='Petr', animal_type='Котан',
-                                         age='399', pet_photo='images/cat.jpg'):
+def test_add_new_pet_with_un_normal_age(name=name_en, animal_type=animal_type_en,
+                                        age=age_big, pet_photo='images/cat.jpg'):
     """Проверяем что можно добавить питомца с не корректным возрастом"""
 
     # Получаем полный путь изображения питомца и сохраняем в переменную pet_photo
@@ -73,9 +77,10 @@ def test_add_new_pet_with_un_normal_age(name='Petr', animal_type='Котан',
     assert status == 200
     assert result['age'] == age
 
+
 # Test 5
-def test_add_new_pet_with_un_normal_animal_type(name='Spyke', animal_type='$#&!?',
-                                         age='9', pet_photo='images/cat.jpg'):
+def test_add_new_pet_with_un_normal_animal_type(name=name_en, animal_type=animal_type_symbols,
+                                                age=age_num, pet_photo='images/cat.jpg'):
     """Проверяем возможность добавления питомца с не корректным типом"""
 
     # Получаем полный путь изображения питомца и сохраняем в переменную pet_photo
@@ -91,6 +96,7 @@ def test_add_new_pet_with_un_normal_animal_type(name='Spyke', animal_type='$#&!?
     assert status == 200
     assert result['age'] == age
 
+
 # Test 6
 def test_get_api_key_for_not_valid_user(email=not_valid_email, password=test_password_1):
     """ Проверяем возможность получения api ключа с not_valid_email и с not_valid_password"""
@@ -102,9 +108,10 @@ def test_get_api_key_for_not_valid_user(email=not_valid_email, password=test_pas
     assert status != 200
     assert 'key' not in result
 
+
 # Test 7
-def test_add_new_pet_with_photo_8k(name='Petr', animal_type='Shpik',
-                                         age='19', pet_photo='images/cat_8k.jpg'):
+def test_add_new_pet_with_photo_8k(name=name_en, animal_type=animal_type_en,
+                                   age=age_num, pet_photo='images/cat_8k.jpg'):
     """Проверяем что можно добавить питомца с корректным длинными и фото в 8к"""
 
     # Получаем полный путь изображения питомца и сохраняем в переменную pet_photo
@@ -120,8 +127,9 @@ def test_add_new_pet_with_photo_8k(name='Petr', animal_type='Shpik',
     assert status == 200
     assert 'jpg' in pet_photo
 
+
 # Test 8
-def test_add_new_pet_with_space_in_param(name=' ', animal_type=' ', age=' '):
+def test_add_new_pet_with_space_in_param(name=name_space, animal_type=animal_type_space, age=age_space):
     """Проверяем что можно добавить питомца с пустыми полями и без фото"""
 
     # Запрашиваем ключ api и сохраняем в переменую auth_key
@@ -134,8 +142,9 @@ def test_add_new_pet_with_space_in_param(name=' ', animal_type=' ', age=' '):
     assert status == 200
     assert result['name'] == name
 
+
 # Test 9
-def test_change_correct_name_and_type_pet_to_empty_value(name=' ', animal_type=' ', age=11):
+def test_change_correct_name_and_type_pet_to_empty_value(name=name_space, animal_type=animal_type_space, age=age_int):
     """Проверяем возможность обновления имени и типа питомца на пробелы"""
 
     # Получаем ключ auth_key и список своих питомцев
@@ -153,9 +162,10 @@ def test_change_correct_name_and_type_pet_to_empty_value(name=' ', animal_type='
         # если спиок питомцев пустой, то выкидываем исключение с текстом об отсутствии своих питомцев
         raise Exception("There is no my pets")
 
+
 # Test 10
-def test_add_new_pet_with_str_in_age_instead_int(name='Зорька', animal_type='котя',
-                                     age='десять', pet_photo='images/cat1.jpg'):
+def test_add_new_pet_with_str_in_age_instead_int(name=name_ru, animal_type=name_ru,
+                                                 age=age_str, pet_photo='images/cat1.jpg'):
     """Проверяем возможность добавления типа данных str в параметр age"""
 
     # Получаем полный путь изображения питомца и сохраняем в переменную pet_photo
